@@ -10,10 +10,117 @@
 </head>
 <body>
 <script type="text/javascript">
+//init menu list data
+var menus = [
+  {
+    "id":0,
+    "icon":"img/icon.png",
+    "name":"Overview",
+    "submenus":[
+      {
+        "id":0,
+        "name":"Reports"
+      },
+      {
+        "id":1,
+        "name":"Analytics"
+      },
+      {
+        "id":2,
+        "name":"Export"
+      }
+    ]
+  },
+  {
+    "id":1,
+    "icon":"img/icon.png",
+    "name":"Nav item",
+    "submenus":[
+      {
+        "id":0,
+        "name":"Nav item again"
+      },
+      {
+        "id":1,
+        "name":"One more nav"
+      },
+      {
+        "id":2,
+        "name":"Another nav item"
+      }
+    ]
+  },
+  {
+    "id":2,
+    "icon":"img/icon.png",
+    "name":"Nav item",
+    "selected": true,
+    "submenus":[
+      {
+        "id":0,
+        "name":"Nav item again"
+      },
+      {
+        "id":1,
+        "name":"One more nav"
+      },
+      {
+        "id":2,
+        "name":"Another nav item",
+        "selected":true
+      }
+    ]
+  },
+  {
+    "id":3,
+    "icon":"img/icon.png",
+    "name":"Nav item",
+    "submenus":[
+      {
+        "id":0,
+        "name":"Nav item again"
+      },
+      {
+        "id":1,
+        "name":"One more nav"
+      },
+      {
+        "id":2,
+        "name":"Another nav item"
+      }
+    ]
+  }
+];
 	//页面加载时设置选中的menu_id, submenu_id
-	var menu_id = 3; 
-	var submenu_id = 2;
+	var menu_id = -1; 
+	var submenu_id = -1;
   $(document).ready(function(){
+    //init menu list by menu data
+    var menu_html = "";
+    $(menus).each(function(idx,item){
+      menu_html += '<li class="item_active"><a href="#" class="text-center"><img src="./'+item.icon+'"><br/>'+item.name+'</span></a>'
+          +'<div class="ui-left-menu col-sm-offset-12"><ul >';
+          $(item.submenus).each(function(j,subitem){
+            menu_html += '<li><a href="main.html">'+subitem.name+'</a></li>';
+            if(subitem.selected == true){
+              submenu_id = j;
+            }
+          });
+      menu_html += '</ul></div></li>';
+      if(item.selected == true){
+        menu_id = idx;
+        //init selected submenu list
+        var submenu_html = "<ul>";
+        $(item.submenus).each(function(j,subitem){
+          submenu_html += '<li class="item_submenu"><a href="">'+subitem.name+'</a></li>';
+        });
+        submenu_html += "</ul>";
+        $('#submenu_div').html(submenu_html);
+      }
+    });
+    $("#menu").html(menu_html);
+
+    //init menu effect for mouseover and mouseleave
     $(".nav-sidebar > li").mouseover(function(){
       $(".nav-sidebar > li > div").hide();
       if($(this).hasClass("active") == false){
@@ -99,7 +206,7 @@
       </ul>
       
     </div>
-    <div class="submenu col-sm-offset-1">
+    <div id="submenu_div" class="submenu col-sm-offset-1">
         <ul>
           <li class="item_submenu"><a href="">Nav item again</a></li>
           <li class="item_submenu"><a href="">One more nav</a></li>
